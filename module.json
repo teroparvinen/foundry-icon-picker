@@ -1,0 +1,28 @@
+{
+	"name": "icon-picker",
+	"title": "Icon Picker",
+	"description": "A player usable icon picker for selecting icons for abilities and items.",
+	"authors": [
+		{
+			"name": "Tero Parvinen"
+		}
+	],
+	"version": "1.0",
+	"minimumCoreVersion": "9",
+	"compatibleCoreVersion": "9",
+    "system": ["dnd5e"],
+	"esmodules": [
+		"./module/icon-picker.js"
+	],
+	"styles": [
+		"styles/icon-picker.css"
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "./lang/en.json"
+		}
+	],
+	"socket": true
+}
