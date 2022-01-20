@@ -1,24 +1,29 @@
 import { moduleId } from "./const.js";
 import { IconPicker } from './app.js';
 
-async function pickImage(img) {
-	const picker = new IconPicker();
+async function pickImage(img, shouldCallSubmit) {
+    const picker = new IconPicker();
 
-	try {
-		let result = await picker.pick();
-		$(img).attr('src', result);
-		$(img).closest('form').submit();
-	} catch { }
+    try {
+        let result = await picker.pick();
+        $(img).attr('src', result);
+        if (shouldCallSubmit) {
+            $(img).closest('form').submit();
+        }
+    } catch { }
 }
 
 Hooks.on('renderItemSheet', (app, html) => {
-	if (!game.user.can("FILES_BROWSE")) {
-		if (app.isEditable) html.find('img[data-edit]').click(function (ev) { pickImage(this); });
-	}
+    if (!game.user.can("FILES_BROWSE")) {
+        if (app.isEditable) html.find('img[data-edit]').click(function (ev) { pickImage(this, app.options.submitOnChange); });
+    }
+});
+Hooks.on('renderMacroConfig', (app, html) => {
+    if (!game.user.can("FILES_BROWSE")) {
+        if (app.isEditable) html.find('img[data-edit]').click(function (ev) { pickImage(this, app.options.submitOnChange); });
+    }
 });
 
 Hooks.on('init', () => {
-	game.modules.set(moduleId, {
-		api: IconPicker
-	})
+    game.modules.get(moduleId).api = IconPicker
 });

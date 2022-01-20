@@ -1,17 +1,17 @@
 <div class="icon-picker">
-	<div class="flexrow">
-		{{#unless isRoot}}
-			<button class="dir-up flex0" data-storage="{{storage}}" data-path={{previousPath}}><i class="fas fa-level-up-alt fa-flip-horizontal fa-fw"></i></button>
-		{{/unless}}
-		<div class="dirs flexrow">
-			{{#each dirs as |dir|}}
-				<div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
-			{{/each}}
-		</div>
-	</div>
-	<div class="files flexrow">
-		{{#each files as |file|}}
-			<img class="file flex0" src="{{file.path}}" title="{{file.name}}" data-storage="{{file.storage}}" data-path="{{file.path}}" />
-		{{/each}}
-	</div>
+    <div class="flexrow">
+        {{#unless isRoot}}
+            <button class="dir-up flex0" data-storage="{{storage}}" data-path={{previousPath}}><i class="fas fa-level-up-alt fa-flip-horizontal fa-fw"></i></button>
+        {{/unless}}
+        <div class="dirs flexrow">
+            {{#each dirs as |dir|}}
+                <div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="files flexrow">
+        {{#each files as |file|}}
+            <img class="file flex0" src="{{file.path}}" title="{{file.name}}" data-storage="{{file.storage}}" data-path="{{file.path}}" />
+        {{/each}}
+    </div>
 </div>
