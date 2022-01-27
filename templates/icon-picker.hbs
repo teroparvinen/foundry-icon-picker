@@ -1,12 +1,15 @@
 <div class="icon-picker">
-    <div class="flexrow">
+    <div class="flexrow icon-picker__navigation">
         {{#unless isRoot}}
             <button class="dir-up flex0" data-storage="{{storage}}" data-path={{previousPath}}><i class="fas fa-level-up-alt fa-flip-horizontal fa-fw"></i></button>
         {{/unless}}
-        <div class="dirs flexrow">
-            {{#each dirs as |dir|}}
-                <div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
-            {{/each}}
+        <div class="icon-picker__path-components">
+            <div class="icon-picker__current-path">{{displayPath}}</div>
+            <div class="dirs flexrow">
+                {{#each dirs as |dir|}}
+                    <div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
+                {{/each}}
+            </div>
         </div>
     </div>
     <div class="files flexrow">

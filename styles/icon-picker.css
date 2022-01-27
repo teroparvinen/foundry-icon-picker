@@ -8,3 +8,15 @@
     height: 50px;
     padding: 1px;
 }
+
+.icon-picker__path-components {
+    padding-left: 5px;
+}
+
+.icon-picker__current-path {
+    margin-bottom: 3px;
+}
+
+.icon-picker__navigation {
+    margin-bottom: 3px;
+}

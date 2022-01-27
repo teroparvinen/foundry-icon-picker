@@ -56,6 +56,7 @@ export class IconPicker extends Application {
     getData(options) {
         const storage = this._contents.storage;
         const path = this._contents.path;
+        const root = this._roots.find(r => path?.startsWith(r.path) && storage == r.storage);
 
         const isRoot = !path;
         const isRootNode = this._roots.find(r => r.path === path);
@@ -67,8 +68,11 @@ export class IconPicker extends Application {
             const previousPath = isRootNode ? "" : this.previousPath(path);
             const files = this._contents.files.map(f => { return { storage, path: f, name: this.lastPathComponent(f) }});
             const dirs = this._contents.dirs.map(d => { return { storage, path: d, name: this.lastPathComponent(d) }});
+
+            const selectedPath = path.slice(root.path.length);
+            const displayPath = root.name + selectedPath;
     
-            return { storage, path, previousPath, files, dirs };
+            return { storage, path, previousPath, files, dirs, displayPath };
         }
     }
 
