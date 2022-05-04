@@ -10,7 +10,7 @@ function makePathKey(storage, path) {
 // public or data
 export async function getContents(storage, path) {
     if (game.user.can("FILES_BROWSE")) {
-        const result = await FilePicker.browse(op.request.storage, op.request.path);
+        const result = await FilePicker.browse(storage, path);
         return { dirs: result.dirs, files: result.files, storage, path };
     } else {
         const key = makePathKey(storage, path);
