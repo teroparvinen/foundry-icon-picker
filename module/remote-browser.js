@@ -23,7 +23,7 @@ export async function getContents(storage, path) {
             return contentCache[key];
         } else {
             return new Promise((resolve) => {
-                socket.emit(
+                game.socket.emit(
                     `module.${moduleId}`,
                     { request: { storage, path	}}
                 );
@@ -41,7 +41,7 @@ export async function performSearch(query) {
         return searchFor(query);
     } else {
         return new Promise((resolve) => {
-            socket.emit(
+            game.socket.emit(
                 `module.${moduleId}`,
                 { search: query }
             );
@@ -83,16 +83,16 @@ function searchFor(query) {
 }
 
 Hooks.on('setup', () => {
-    socket.on(`module.${moduleId}`, async (op) => {
+    game.socket.on(`module.${moduleId}`, async (op) => {
         if (game.user.can("FILES_BROWSE")) {
             if (op.request) {
                 const result = await FilePicker.browse(op.request.storage, op.request.path);
-                socket.emit(`module.${moduleId}`, { 
+                game.socket.emit(`module.${moduleId}`, { 
                     result: { dirs: result.dirs, files: result.files, storage: op.request.storage, path: op.request.path },
                     originalRequest: op.request
                 });
             } else if (op.search) {
-                socket.emit(`module.${moduleId}`, {
+                game.socket.emit(`module.${moduleId}`, {
                     result: searchFor(op.search),
                     originalSearch: op.search
                 });

@@ -9,8 +9,5 @@ export const roots = [
     { storage: 'public', path: 'icons/skills', name: 'skills@system' },
     { storage: 'public', path: 'icons/sundries', name: 'sundries@system' },
     { storage: 'public', path: 'icons/tools', name: 'tools@system' },
-    { storage: 'public', path: 'icons/weapons', name: 'weapons@system' },
-    { storage: 'data', path: 'systems/dnd5e/icons/items', name: 'items@dnd5e' },
-    { storage: 'data', path: 'systems/dnd5e/icons/skills', name: 'skills@dnd5e' },
-    { storage: 'data', path: 'systems/dnd5e/icons/spells', name: 'spells@dnd5e' }
+    { storage: 'public', path: 'icons/weapons', name: 'weapons@system' }
 ];
