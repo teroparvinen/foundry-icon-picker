@@ -1,5 +1,7 @@
 import { moduleId, localizationID } from "./const.js";
-import { getContents } from "./remote-browser.js";
+import { roots } from "./config.js";
+import { getContents, performSearch } from "./remote-browser.js";
+import { lastPathComponent, parentPath } from "./utils.js";
 
 export class IconPicker extends Application {
     static get defaultOptions() {
@@ -22,36 +24,13 @@ export class IconPicker extends Application {
         return mergedOptions;
     }
 
-    _roots = [
-        { storage: 'public', path: 'icons/commodities', name: 'commodities@system' },
-        { storage: 'public', path: 'icons/consumables', name: 'consumables@system' },
-        { storage: 'public', path: 'icons/containers', name: 'containers@system' },
-        { storage: 'public', path: 'icons/creatures', name: 'creatures@system' },
-        { storage: 'public', path: 'icons/environment', name: 'environment@system' },
-        { storage: 'public', path: 'icons/equipment', name: 'equipment@system' },
-        { storage: 'public', path: 'icons/magic', name: 'magic@system' },
-        { storage: 'public', path: 'icons/skills', name: 'skills@system' },
-        { storage: 'public', path: 'icons/sundries', name: 'sundries@system' },
-        { storage: 'public', path: 'icons/tools', name: 'tools@system' },
-        { storage: 'public', path: 'icons/weapons', name: 'weapons@system' },
-        { storage: 'data', path: 'systems/dnd5e/icons/items', name: 'items@dnd5e' },
-        { storage: 'data', path: 'systems/dnd5e/icons/skills', name: 'skills@dnd5e' },
-        { storage: 'data', path: 'systems/dnd5e/icons/spells', name: 'spells@dnd5e' }
-    ]
+    _roots = roots;
     
     _resolve = null;
     _reject = null;
-    _contents = {}
-
-    lastPathComponent(path) {
-        const components = path.split('/');
-        return components[components.length - 1];
-    }
-
-    previousPath(path) {
-        const components = path.split('/');
-        return components.slice(0, components.length-1).join('/');
-    }
+    _contents = {};
+    _isSearching = false;
+    _searchTerm = null;
 
     getData(options) {
         const storage = this._contents.storage;
@@ -61,13 +40,19 @@ export class IconPicker extends Application {
         const isRoot = !path;
         const isRootNode = this._roots.find(r => r.path === path);
 
-        if (isRoot) {
+        const isSearch = this._isSearching;
+
+        if (isSearch) {
+            // const files = this._contents?.files || [];
+            // return { files, isSearch: true, searchTerm: this._searchTerm };
+            return foundry.utils.mergeObject({ isSearch: true, searchTerm: this._searchTerm }, this._contents);
+        } else if (isRoot) {
             const dirs = this._roots.map(r => { return { storage: r.storage, path: r.path, name: r.name }});
             return { dirs, isRoot: true };
         } else {
-            const previousPath = isRootNode ? "" : this.previousPath(path);
-            const files = this._contents.files.map(f => { return { storage, path: f, name: this.lastPathComponent(f) }});
-            const dirs = this._contents.dirs.map(d => { return { storage, path: d, name: this.lastPathComponent(d) }});
+            const previousPath = isRootNode ? "" : parentPath(path);
+            const files = this._contents.files.map(f => { return { storage, path: f, name: lastPathComponent(f) }});
+            const dirs = this._contents.dirs.map(d => { return { storage, path: d, name: lastPathComponent(d) }});
 
             const selectedPath = path.slice(root.path.length);
             const displayPath = root.name + selectedPath;
@@ -87,7 +72,7 @@ export class IconPicker extends Application {
             } else {
                 self._fetchRoots();
             }
-        })
+        });
         html.find('.file').on('click', function(event) {
             const storage = this.dataset.storage;
             const path = this.dataset.path;
@@ -96,6 +81,25 @@ export class IconPicker extends Application {
             self._reject = () => {};
             self.close();
         });
+        html.find('.search-input').on('change', function(event) {
+            if (!event.target.value) {
+                self._searchTerm = null;
+                self._contents = {};
+                self.render(true);
+            } else {
+                self._performSearch(event.target.value);
+            }
+        });
+        html.find('.toggle-search').on('click', function(event) {
+            self._isSearching = !self._isSearching;
+            if (self._isSearching && self._searchTerm) {
+                self._performSearch(self._searchTerm);
+            } else {
+                self._contents = {};
+                self.render(true);
+            }
+        });
+        if (self._isSearching) { html.find('.search-input').focus(); }
     }
 
     close() {
@@ -118,6 +122,15 @@ export class IconPicker extends Application {
     async _fetchContents(storage, path) {
         const contents = await getContents(storage, path)
         this._contents = contents
+        this._isSearching = false;
+        this.render(true);
+    }
+
+    async _performSearch(query) {
+        this._searchTerm = query;
+
+        const result = await performSearch(query);
+        this._contents = result;
         this.render(true);
     }
 

@@ -20,3 +20,16 @@
 .icon-picker__navigation {
     margin-bottom: 3px;
 }
+
+.icon-picker__search-toggle {
+    padding: 3px;
+}
+
+.icon-picker__search {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.icon-picker__search-dirs {
+    margin-bottom: 10px;
+}

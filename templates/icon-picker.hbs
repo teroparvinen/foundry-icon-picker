@@ -1,17 +1,36 @@
 <div class="icon-picker">
-    <div class="flexrow icon-picker__navigation">
-        {{#unless isRoot}}
-            <button class="dir-up flex0" data-storage="{{storage}}" data-path={{previousPath}}><i class="fas fa-level-up-alt fa-flip-horizontal fa-fw"></i></button>
-        {{/unless}}
-        <div class="icon-picker__path-components">
-            <div class="icon-picker__current-path">{{displayPath}}</div>
+    {{#if isSearch}}
+        <div class="flexrow">
+            <input type="text" class="icon-picker__search search-input" value="{{searchTerm}}" />
+            <div class="icon-picker__search-toggle flex0">
+                <i class="fas fa-times fa-lg toggle-search"></i>
+            </div>
+        </div>
+        <div class="icon-picker__search-dirs">
             <div class="dirs flexrow">
                 {{#each dirs as |dir|}}
                     <div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
                 {{/each}}
             </div>
         </div>
-    </div>
+    {{else}}
+        <div class="flexrow icon-picker__navigation">
+            {{#unless isRoot}}
+                <button class="dir-up flex0" data-storage="{{storage}}" data-path={{previousPath}}><i class="fas fa-level-up-alt fa-flip-horizontal fa-fw"></i></button>
+            {{/unless}}
+            <div class="icon-picker__path-components">
+                <div class="icon-picker__current-path">{{displayPath}}</div>
+                <div class="dirs flexrow">
+                    {{#each dirs as |dir|}}
+                        <div class="dir tag flex0" data-storage="{{dir.storage}}" data-path="{{dir.path}}">{{dir.name}}</div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="icon-picker__search-toggle flex0">
+                <i class="fas fa-search fa-lg toggle-search"></i>
+            </div>
+        </div>
+    {{/if}}
     <div class="files flexrow">
         {{#each files as |file|}}
             <img class="file flex0" src="{{file.path}}" title="{{file.name}}" data-storage="{{file.storage}}" data-path="{{file.path}}" />
