@@ -4,13 +4,13 @@
     "description": "A player usable icon picker for selecting icons for abilities and items.",
     "authors": [
         {
-            "name": "Tero Parvinen"
+            "name": "Tero Parvinen (tero.p)"
         }
     ],
     "version": "10.1",
     "compatibility": {
         "minimum": 10,
-        "verified": 10
+        "verified": 11
     },
     "relationships": {
         "systems": [{
