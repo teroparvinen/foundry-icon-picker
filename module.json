@@ -7,16 +7,10 @@
             "name": "Tero Parvinen (tero.p)"
         }
     ],
-    "version": "10.2",
+    "version": "10.3",
     "compatibility": {
         "minimum": 10,
         "verified": 11
-    },
-    "relationships": {
-        "systems": [{
-            "id": "dnd5e",
-            "type": "system"
-        }]
     },
     "esmodules": [
         "./module/icon-picker.js"

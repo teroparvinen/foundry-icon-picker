@@ -13,19 +13,22 @@ async function pickImage(img, shouldCallSubmit) {
     } catch { }
 }
 
-Hooks.on('renderItemSheet', (app, html) => {
+function registerListeners(app, html) {
     if (!game.user.can("FILES_BROWSE")) {
         if (app.isEditable) html.find('img[data-edit]').click(function (ev) { pickImage(this, app.options.submitOnChange); });
     } else {
         if (app.isEditable) html.find('img[data-edit]').on("contextmenu", function (ev) { pickImage(this, app.options.submitOnChange); });
     }
+}
+
+Hooks.on('renderItemSheet', (app, html) => {
+    registerListeners(app, html);
 });
 Hooks.on('renderMacroConfig', (app, html) => {
-    if (!game.user.can("FILES_BROWSE")) {
-        if (app.isEditable) html.find('img[data-edit]').click(function (ev) { pickImage(this, app.options.submitOnChange); });
-    } else {
-        if (app.isEditable) html.find('img[data-edit]').on("contextmenu", function (ev) { pickImage(this, app.options.submitOnChange); });
-    }
+    registerListeners(app, html);
+});
+Hooks.on('renderActiveEffectConfig', (app, html) => {
+    registerListeners(app, html);
 });
 
 Hooks.on('init', () => {

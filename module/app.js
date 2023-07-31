@@ -1,6 +1,5 @@
 import { moduleId, localizationID } from "./const.js";
-import { roots } from "./config.js";
-import { getContents, performSearch } from "./remote-browser.js";
+import { getContents, getRoots, performSearch } from "./remote-browser.js";
 import { lastPathComponent, parentPath } from "./utils.js";
 
 export class IconPicker extends Application {
@@ -24,7 +23,7 @@ export class IconPicker extends Application {
         return mergedOptions;
     }
 
-    _roots = roots;
+    _roots = null;
     
     _resolve = null;
     _reject = null;
@@ -32,7 +31,11 @@ export class IconPicker extends Application {
     _isSearching = false;
     _searchTerm = null;
 
-    getData(options) {
+    async getData(options) {
+        if (this._roots === null) {
+            this._roots = await getRoots();
+        }
+
         const storage = this._contents.storage;
         const path = this._contents.path;
         const root = this._roots.find(r => path?.startsWith(r.path) && storage == r.storage);
@@ -43,8 +46,6 @@ export class IconPicker extends Application {
         const isSearch = this._isSearching;
 
         if (isSearch) {
-            // const files = this._contents?.files || [];
-            // return { files, isSearch: true, searchTerm: this._searchTerm };
             return foundry.utils.mergeObject({ isSearch: true, searchTerm: this._searchTerm }, this._contents);
         } else if (isRoot) {
             const dirs = this._roots.map(r => { return { storage: r.storage, path: r.path, name: r.name }});
