@@ -23,6 +23,7 @@
 
 .icon-picker__search-toggle {
     padding: 3px;
+    cursor: pointer;
 }
 
 .icon-picker__search {
@@ -32,4 +33,32 @@
 
 .icon-picker__search-dirs {
     margin-bottom: 10px;
+}
+
+/* Search styling */
+.icon-picker .dirs.flexrow > .dir.tag.flex0 {
+    cursor: pointer;
+    margin-right: 5%;
+    color: var(--color-text-light-highlight) default;
+}
+
+.icon-picker .dirs.flexrow > .dir.tag.flex0:not(:last-child)::after {
+    content: ",";
+}
+
+.icon-picker .dirs.flexrow > .dir.tag.flex0:last-child {
+    margin-right: 0;
+}
+
+.icon-picker .dirs.flexrow > .dir.tag.flex0:last-child:after {
+    content: ".";
+}
+
+.icon-picker .dirs.flexrow > .dir.tag.flex0:hover {
+    text-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+.icon-picker .files.flexrow > .file.flex0:hover {
+    box-shadow: 0 0 5px var(--color-shadow-primary);
+    cursor: pointer;
 }
