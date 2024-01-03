@@ -24,6 +24,11 @@ function registerListeners(app, html) {
 Hooks.on('renderItemSheet', (app, html) => {
     registerListeners(app, html);
 });
+
+Hooks.on('renderActorSheet', (app, html) => {
+    registerListeners(app, html);
+});
+
 Hooks.on('renderMacroConfig', (app, html) => {
     registerListeners(app, html);
 });
